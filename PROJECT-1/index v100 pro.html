@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিদ্যানুরাগ স্টাডি সেন্টার</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#f0f4fe;min-height:100vh;display:flex;justify-content:center;padding:1.5rem;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+        .main-box{max-width:1100px;width:100%;background:#fff;border-radius:40px;box-shadow:0 20px 60px rgba(0,20,40,.12);padding:2rem}
+        .head-wrap{display:flex;align-items:center;gap:16px;margin-bottom:2rem;border-bottom:2px solid #eef2f7;padding-bottom:1rem;flex-wrap:wrap}
+        .book-icon{font-size:2.8rem;background:#e2ebf9;width:65px;height:65px;display:flex;align-items:center;justify-content:center;border-radius:18px}
+        .head-wrap h1{font-size:2rem;font-weight:800;color:#0b2a4a}
+        .head-wrap h1 span{font-weight:300;color:#3c5f8a}
+        .theme-box{display:flex;gap:8px;margin-left:auto}
+        .theme-btn{width:36px;height:36px;border-radius:50%;border:2px solid #1e3a6b;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:.2s;font-size:1rem}
+        .theme-btn:hover{transform:scale(1.1)}
+        .theme-btn.active{border-color:#f0b841;box-shadow:0 0 0 3px rgba(240,184,65,.3)}
+        .t-light{background:#fff;color:#0b2a4a}
+        .t-dark{background:#1a2a40;color:#e8edf8;border-color:#4a6a8a}
+        .t-magic{background:linear-gradient(135deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff);color:#fff;border-color:transparent;font-size:1.2rem}
+        .nav-wrap{display:flex;flex-wrap:wrap;gap:.3rem .8rem;margin-bottom:2.5rem;background:#f0f4fe;padding:.5rem 1.2rem;border-radius:60px}
+        .nav-btn{background:0 0;border:0;padding:.6rem 1.6rem;font-size:.95rem;font-weight:600;border-radius:40px;cursor:pointer;color:#0b2a4a;transition:.2s;display:flex;align-items:center;gap:8px}
+        .nav-btn.active{background:#1e3a6b;color:#fff;box-shadow:0 6px 20px rgba(26,67,133,.25)}
+        .nav-btn:hover:not(.active){background:rgba(30,58,107,.08)}
+        .panel{display:none}
+        .panel.show{display:block}
+        .form-holder{background:#fff;border-radius:28px;padding:2rem;border:1px solid #eef3fc}
+        .form-holder h3{font-size:1.3rem;color:#0b2a4a;margin-bottom:1.2rem}
+        .row{display:flex;flex-wrap:wrap;gap:1.2rem 1.8rem;margin-bottom:1.2rem;align-items:center}
+        .row-inline{display:flex;flex-wrap:wrap;gap:1.2rem 1.8rem;margin-bottom:1.2rem;align-items:flex-end}
+        .row-inline .grp{flex:1 0 180px}
+        .grp{flex:1 0 200px;display:flex;flex-direction:column;gap:6px}
+        .grp label{font-size:.85rem;font-weight:600;color:#0b2a4a;display:flex;align-items:center;gap:8px}
+        .grp input,.grp select{padding:.75rem 1rem;border:2px solid #e8edf5;border-radius:14px;font-size:.95rem;background:#fafcff;width:100%;outline:0;transition:.2s}
+        .grp input:focus,.grp select:focus{border-color:#1e3a6b;box-shadow:0 0 0 4px rgba(30,58,107,.1)}
+        .grp input:hover,.grp select:hover{border-color:#c8d4e8}
+        .green-bg{background:#e6f7e6!important;border-color:#1f9d5a!important}
+        .red-bg{background:#ffe9e9!important;border-color:#d14c4c!important}
+        .btn-main{background:linear-gradient(135deg,#1e3a6b,#0b2a4a);color:#fff;border:0;padding:.9rem 2.8rem;border-radius:60px;font-weight:700;font-size:1rem;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:12px;margin-top:.6rem;box-shadow:0 8px 24px rgba(26,67,133,.25)}
+        .btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(26,67,133,.35)}
+        .btn-main:disabled{opacity:.6;cursor:not-allowed;transform:none!important}
+        .card-preview{background:#f5f9ff;border-radius:32px;padding:2rem;border:1px solid #dfe9f5;margin-top:1.8rem}
+        .id-card{background:#fff;border-radius:28px;padding:2rem;box-shadow:0 8px 30px rgba(0,0,0,.04);border-left:6px solid #1e3a6b;max-width:500px;margin:0 auto}
+        .id-head{display:flex;align-items:center;gap:14px;margin-bottom:1rem}
+        .id-head .icn{font-size:2.2rem;color:#1e3a6b;background:#e2ebf9;padding:10px;border-radius:16px}
+        .id-head h3{font-weight:700;color:#0b2a4a;font-size:1.2rem}
+        .id-photo{display:flex;justify-content:center;margin-bottom:16px}
+        .id-photo img{width:110px;height:110px;object-fit:cover;border-radius:50%;border:4px solid #1e3a6b;background:#eef3fc}
+        .id-detail{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;font-size:.95rem;margin:12px 0}
+        .id-detail span{font-weight:300;color:#2f4b70}
+        .id-detail strong{color:#0b1f38}
+        .pdf-btn{margin-top:16px;background:linear-gradient(135deg,#1e3a6b,#0b2a4a);border:0;padding:.7rem 1.8rem;border-radius:60px;font-weight:600;color:#fff;display:inline-flex;align-items:center;gap:12px;cursor:pointer;transition:.2s;box-shadow:0 4px 16px rgba(26,67,133,.2)}
+        .pdf-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,67,133,.3)}
+        .contact-item{display:flex;align-items:center;gap:18px;background:#f5f9ff;padding:.9rem 1.8rem;border-radius:60px;margin-bottom:.8rem;width:fit-content;border:1px solid #e2eaf7}
+        .contact-item a{text-decoration:none;color:#0b2a4a;font-weight:500}
+        .contact-item a:hover{color:#1e3a6b}
+        .photo-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #1e3a6b;margin-top:6px;background:#f0f4fe}
+        .hide-div{display:none!important}
+        .show-div{display:block!important}
+        .search-area{margin-top:1.8rem}
+        .not-found{color:#d14c4c;margin-top:1rem;padding:1rem;background:#fff0f0;border-radius:12px;border:1px solid #ffd4d4;text-align:center}
+        .stats{display:flex;gap:2rem;flex-wrap:wrap;padding:.8rem 1.5rem;background:#f0f4fe;border-radius:60px;margin-bottom:1.8rem;justify-content:center}
+        .stat-item{display:flex;align-items:center;gap:8px;font-size:.9rem;color:#0b2a4a}
+        .stat-item .num{font-weight:700;font-size:1.2rem;color:#1e3a6b}
+        .toast{position:fixed;bottom:30px;right:30px;padding:16px 28px;border-radius:16px;color:#fff;font-weight:600;box-shadow:0 12px 40px rgba(0,0,0,.2);transform:translateY(100px);opacity:0;transition:all .5s;z-index:9999;max-width:400px}
+        .toast.show{transform:translateY(0);opacity:1}
+        .toast.good{background:linear-gradient(135deg,#1f9d5a,#158a4a)}
+        .toast.bad{background:linear-gradient(135deg,#d14c4c,#b33a3a)}
+        .toast.info{background:linear-gradient(135deg,#1e3a6b,#0b2a4a)}
+        @media print{body *{visibility:hidden}#printArea,#printArea *{visibility:visible}#printArea{position:absolute;left:0;top:0;width:100%;padding:30px;background:#fff;border:3px solid #1e3a6b;border-radius:16px;max-width:500px;margin:0 auto}.no-print{display:none!important}}
+        #printArea{display:none;background:#fff;padding:30px;max-width:500px;margin:0 auto;border:3px solid #1e3a6b;border-radius:16px}
+        #printArea .p-head{text-align:center;border-bottom:3px solid #1e3a6b;padding-bottom:15px;margin-bottom:20px}
+        #printArea .p-head h2{color:#0b2a4a;font-size:24px;margin:5px 0 0}
+        #printArea .p-head .icn{font-size:2.5rem}
+        #printArea .p-photo{text-align:center;margin-bottom:20px}
+        #printArea .p-photo img{width:130px;height:130px;border-radius:50%;border:4px solid #1e3a6b;object-fit:cover}
+        #printArea .p-detail{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;font-size:15px}
+        #printArea .p-detail .lbl{font-weight:700;color:#0b2a4a}
+        #printArea .p-detail .val{color:#2f4b70}
+        #printArea .p-foot{text-align:center;margin-top:20px;border-top:3px solid #1e3a6b;padding-top:12px;font-size:14px;color:#666}
+        @media(max-width:768px){.main-box{padding:1rem}.head-wrap h1{font-size:1.4rem}.nav-wrap{border-radius:28px;gap:.2rem;padding:.4rem .8rem;overflow-x:auto;flex-wrap:nowrap}.nav-btn{padding:.4rem 1rem;font-size:.8rem;white-space:nowrap}.form-holder{padding:1.2rem}.grp{flex:1 0 100%}.id-detail{grid-template-columns:1fr}.stats{gap:1rem;padding:.6rem 1rem}.toast{bottom:15px;right:15px;left:15px;max-width:none;font-size:.9rem;padding:14px 20px}.btn-main{width:100%;justify-content:center}}
+        @media(max-width:480px){body{padding:.5rem}.main-box{border-radius:1.5rem;padding:.8rem}.head-wrap h1{font-size:1.1rem}.book-icon{width:50px;height:50px;font-size:2rem}.form-holder{padding:.8rem;border-radius:20px}.id-card{padding:1.2rem}.theme-btn{width:30px;height:30px;font-size:.7rem}}
+        
+        /* Dark Theme Styles */
+        body.dark-theme{background:#0a1a2e}
+        body.dark-theme .main-box{background:#1a2a40;border-color:#2a4a6a}
+        body.dark-theme .form-holder{background:#1a2a40;border-color:#2a4a6a}
+        body.dark-theme .form-holder h3{color:#e8edf8}
+        body.dark-theme .grp label{color:#c8d4e8}
+        body.dark-theme .grp input,.dark-theme .grp select{background:#2a3a50;border-color:#3a5a7a;color:#e8edf8}
+        body.dark-theme .grp input:focus,.dark-theme .grp select:focus{border-color:#5a8aaa}
+        body.dark-theme .id-card{background:#1a2a40;border-left-color:#5a8aaa}
+        body.dark-theme .id-head h3{color:#e8edf8}
+        body.dark-theme .id-detail strong{color:#e8edf8}
+        body.dark-theme .id-detail span{color:#a8b8c8}
+        body.dark-theme .card-preview{background:#0a1a2e;border-color:#2a4a6a}
+        body.dark-theme .stats{background:#0a1a2e}
+        body.dark-theme .stat-item{color:#c8d4e8}
+        body.dark-theme .stat-item .num{color:#e8edf8}
+        body.dark-theme .nav-wrap{background:#0a1a2e}
+        body.dark-theme .nav-btn{color:#c8d4e8}
+        body.dark-theme .nav-btn.active{background:#1e3a6b;color:#fff}
+        body.dark-theme .contact-item{background:#0a1a2e;border-color:#2a4a6a}
+        body.dark-theme .contact-item a{color:#c8d4e8}
+        body.dark-theme .not-found{background:#2a1a1a;border-color:#4a2a2a}
+        body.dark-theme .head-wrap{border-color:#2a4a6a}
+        
+        /* Magic Theme */
+        body.magic-theme .main-box{animation:rainbowBorder 3s linear infinite}
+        body.magic-theme .form-holder{animation:rainbowBorder 3s linear infinite}
+        body.magic-theme .id-card{animation:rainbowBorder 3s linear infinite}
+        body.magic-theme .btn-main{animation:rainbowBg 3s linear infinite}
+        body.magic-theme .pdf-btn{animation:rainbowBg 3s linear infinite}
+        body.magic-theme .stats{animation:rainbowBorder 3s linear infinite}
+        body.magic-theme .nav-wrap{animation:rainbowBorder 3s linear infinite}
+        body.magic-theme{background:linear-gradient(135deg,#f0f4fe,#e8edf8);animation:rainbowBg 5s linear infinite}
+        
+        @keyframes rainbowBorder{0%{border-color:#ff0000}17%{border-color:#ff8800}33%{border-color:#ffff00}50%{border-color:#00ff00}67%{border-color:#0088ff}83%{border-color:#8800ff}100%{border-color:#ff0000}}
+        @keyframes rainbowBg{0%{background:linear-gradient(135deg,#ff0000,#ff8800)}25%{background:linear-gradient(135deg,#ff8800,#ffff00)}50%{background:linear-gradient(135deg,#ffff00,#00ff00)}75%{background:linear-gradient(135deg,#00ff00,#0088ff)}100%{background:linear-gradient(135deg,#0088ff,#ff0000)}}
+    </style>
+</head>
+<body>
+<div class="main-box">
+
+    <div class="head-wrap">
+        <div class="book-icon">📚</div>
+        <h1>বিদ্যানুরাগ <span>স্টাডি সেন্টার</span></h1>
+        <div class="theme-box no-print">
+            <button class="theme-btn t-light active" id="lightMode" title="হালকা">☀️</button>
+            <button class="theme-btn t-dark" id="darkMode" title="গাঢ়">🌙</button>
+            <button class="theme-btn t-magic" id="magicMode" title="জাদু">✨</button>
+        </div>
+    </div>
+
+    <div class="stats no-print">
+        <div class="stat-item">📚 মোট: <span class="num" id="totalCount">০</span></div>
+        <div class="stat-item">📝 আজকে: <span class="num" id="todayCount">০</span></div>
+        <div class="stat-item">🪪 সক্রিয়: <span class="num" id="activeCount">০</span></div>
+    </div>
+
+    <div class="nav-wrap no-print">
+        <button class="nav-btn active" data-panel="p1">📝 নিবন্ধন</button>
+        <button class="nav-btn" data-panel="p2">🪪 খুঁজুন</button>
+        <button class="nav-btn" data-panel="p3">📞 যোগাযোগ</button>
+    </div>
+
+    <!-- Panel 1 -->
+    <div id="p1" class="panel show">
+        <div class="form-holder">
+            <h3>📝 ফর্ম পূরণ করুন</h3>
+            <form id="regForm">
+                <div class="row"><div class="grp"><label>👤 নাম</label><input type="text" id="fName" placeholder="e.g. Saiful Islam" required></div></div>
+                <div class="row"><div class="grp"><label>👨 বাবা</label><input type="text" id="fFather" placeholder="ইংরেজি" required></div></div>
+                <div class="row"><div class="grp"><label>👩 মা</label><input type="text" id="fMother" placeholder="ইংরেজি" required></div></div>
+                <div class="row"><div class="grp"><label>🏫 স্কুল</label><input type="text" id="fSchool" placeholder="বাংলা/ইংরেজি"></div></div>
+
+                <div class="row-inline">
+                    <div class="grp"><label>📚 শ্রেণি</label>
+                        <select id="fClass">
+                            <option value="">নির্বাচন</option>
+                            <option value="১ম">১ম</option><option value="২য়">২য়</option>
+                            <option value="৩য়">৩য়</option><option value="৪র্থ">৪র্থ</option>
+                            <option value="৫ম">৫ম</option><option value="৬ষ্ঠ">৬ষ্ঠ</option>
+                            <option value="৭ম">৭ম</option><option value="৮ম">৮ম</option>
+                            <option value="৯ম">৯ম</option><option value="১০ম">১০ম</option>
+                            <option value="১১শ">১১শ</option><option value="১২শ">১২শ</option>
+                        </select>
+                    </div>
+                    <div class="grp hide-div" id="divGroup"><label>🏷️ বিভাগ</label>
+                        <select id="fDivision">
+                            <option value="">নির্বাচন</option>
+                            <option value="বিজ্ঞান">বিজ্ঞান</option>
+                            <option value="মানবিক">মানবিক</option>
+                            <option value="ব্যবসা-বাণিজ্য">ব্যবসা-বাণিজ্য</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row"><div class="grp"><label>🆔 রোল</label><input type="text" id="fRoll" placeholder="রোল নম্বর"></div></div>
+                <div class="row"><div class="grp"><label>🎂 জন্ম-নিবন্ধন</label><input type="text" id="fBirth" placeholder="১৭ সংখ্যা" maxlength="17"><small style="color:#6b7a8f;font-size:.75rem">শুধু সংখ্যা, ১৭টি</small></div></div>
+                <div class="row"><div class="grp"><label>📱 মোবাইল</label><input type="text" id="fMobile" placeholder="১১ সংখ্যা" maxlength="11"><small style="color:#6b7a8f;font-size:.75rem">শুধু সংখ্যা, ১১টি</small></div></div>
+                <div class="row"><div class="grp"><label>🔒 পাসওয়ার্ড</label><input type="password" id="fPass" placeholder="৮ অক্ষর" maxlength="8"><small style="color:#6b7a8f;font-size:.75rem">অন্তত ৮টি</small></div></div>
+
+                <div class="row">
+                    <div class="grp">
+                        <label>📷 ছবি (৩০০×৩০০)</label>
+                        <input type="file" id="fPhoto" accept="image/*">
+                        <small style="color:#6b7a8f;font-size:.75rem">শুধু ৩০০×৩০০px, ১GB এর নিচে</small>
+                        <div><img id="previewImg" class="photo-preview" style="display:none" alt="প্রিভিউ"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-main" id="subBtn">💾 জমা দিন</button>
+            </form>
+
+            <div id="cardShow" class="card-preview" style="display:none">
+                <div class="id-card" id="cardBody">
+                    <div class="id-head"><span class="icn">📚</span><h3>বিদ্যানুরাগ স্টাডি সেন্টার</h3></div>
+                    <div class="id-photo"><img id="cPhoto" src="" alt="ছবি"></div>
+                    <div class="id-detail">
+                        <span><strong>নাম</strong> <span id="cName">---</span></span>
+                        <span><strong>পিতা</strong> <span id="cFather">---</span></span>
+                        <span><strong>মাতা</strong> <span id="cMother">---</span></span>
+                        <span><strong>বিদ্যালয়</strong> <span id="cSchool">---</span></span>
+                        <span><strong>শ্রেণি</strong> <span id="cClass">---</span></span>
+                        <span><strong>বিভাগ</strong> <span id="cDivision">---</span></span>
+                        <span><strong>রোল</strong> <span id="cRoll">---</span></span>
+                        <span><strong>জন্ম-নিবন্ধন</strong> <span id="cBirth">---</span></span>
+                    </div>
+                    <div style="margin-top:10px;display:flex;justify-content:flex-end">
+                        <button class="pdf-btn no-print" id="downPdf">📄 PDF ডাউনলোড</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 2 -->
+    <div id="p2" class="panel">
+        <div class="form-holder">
+            <h3>🔍 কার্ড খুঁজুন</h3>
+            <form id="searchForm">
+                <div class="row"><div class="grp"><label>🎂 জন্ম-নিবন্ধন</label><input type="text" id="sBirth" placeholder="১৭ সংখ্যা" maxlength="17"></div></div>
+                <div class="row"><div class="grp"><label>🔒 পাসওয়ার্ড</label><input type="password" id="sPass" placeholder="৮ অক্ষর" maxlength="8"></div></div>
+                <button type="submit" class="btn-main no-print" style="background:linear-gradient(135deg,#2d4f7a,#1a3a5c)">🔍 খুঁজুন</button>
+            </form>
+
+            <div id="searchResult" class="search-area" style="display:none">
+                <div class="id-card" id="foundCard">
+                    <div class="id-head"><span class="icn">📚</span><h3>বিদ্যানুরাগ স্টাডি সেন্টার</h3></div>
+                    <div class="id-photo"><img id="sPhoto" src="" alt="ছবি"></div>
+                    <div class="id-detail">
+                        <span><strong>নাম</strong> <span id="sName">---</span></span>
+                        <span><strong>পিতা</strong> <span id="sFather">---</span></span>
+                        <span><strong>মাতা</strong> <span id="sMother">---</span></span>
+                        <span><strong>বিদ্যালয়</strong> <span id="sSchool">---</span></span>
+                        <span><strong>শ্রেণি</strong> <span id="sClass">---</span></span>
+                        <span><strong>বিভাগ</strong> <span id="sDivision">---</span></span>
+                        <span><strong>রোল</strong> <span id="sRoll">---</span></span>
+                        <span><strong>জন্ম-নিবন্ধন</strong> <span id="sBirthVal">---</span></span>
+                    </div>
+                    <div style="margin-top:10px;display:flex;justify-content:flex-end">
+                        <button class="pdf-btn no-print" id="downFound">📄 PDF ডাউনলোড</button>
+                    </div>
+                </div>
+            </div>
+            <div id="notFound" class="not-found" style="display:none">⚠️ কোনো কার্ড পাওয়া যায়নি।</div>
+        </div>
+    </div>
+
+    <!-- Panel 3 -->
+    <div id="p3" class="panel">
+        <div class="form-holder">
+            <h3>📞 যোগাযোগ</h3>
+            <div class="contact-item">📱 <a href="tel:01767126066">01767126066</a></div>
+            <div class="contact-item">✉️ <a href="mailto:saiful07.bd@gmail.com">saiful07.bd@gmail.com</a></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Print Area -->
+<div id="printArea">
+    <div class="p-head"><span class="icn">📚</span><h2>বিদ্যানুরাগ স্টাডি সেন্টার</h2></div>
+    <div class="p-photo"><img id="pPhoto" src="" alt="ছবি"></div>
+    <div class="p-detail">
+        <div><span class="lbl">নাম</span><br><span class="val" id="pName">---</span></div>
+        <div><span class="lbl">পিতা</span><br><span class="val" id="pFather">---</span></div>
+        <div><span class="lbl">মাতা</span><br><span class="val" id="pMother">---</span></div>
+        <div><span class="lbl">বিদ্যালয়</span><br><span class="val" id="pSchool">---</span></div>
+        <div><span class="lbl">শ্রেণি</span><br><span class="val" id="pClass">---</span></div>
+        <div><span class="lbl">বিভাগ</span><br><span class="val" id="pDivision">---</span></div>
+        <div><span class="lbl">রোল</span><br><span class="val" id="pRoll">---</span></div>
+        <div><span class="lbl">জন্ম-নিবন্ধন</span><br><span class="val" id="pBirth">---</span></div>
+    </div>
+    <div class="p-foot">✅ বৈধ এডমিড কার্ড</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+    let allCards=[];
+    let busy=false;
+
+    // ===== Theme =====
+    function setTheme(t){
+        document.body.classList.remove('light-theme','dark-theme','magic-theme');
+        document.querySelectorAll('.theme-btn').forEach(function(b){b.classList.remove('active')});
+        if(t==='light'){
+            document.body.classList.add('light-theme');
+            document.getElementById('lightMode').classList.add('active');
+            localStorage.setItem('theme','light');
+        }else if(t==='dark'){
+            document.body.classList.add('dark-theme');
+            document.getElementById('darkMode').classList.add('active');
+            localStorage.setItem('theme','dark');
+        }else if(t==='magic'){
+            document.body.classList.add('magic-theme');
+            document.getElementById('magicMode').classList.add('active');
+            localStorage.setItem('theme','magic');
+        }
+    }
+    var savedTheme=localStorage.getItem('theme')||'light';
+    setTheme(savedTheme);
+    
+    document.getElementById('lightMode').onclick=function(){setTheme('light')};
+    document.getElementById('darkMode').onclick=function(){setTheme('dark')};
+    document.getElementById('magicMode').onclick=function(){setTheme('magic')};
+
+    // ===== Data =====
+    function loadData(){
+        try{
+            var x=localStorage.getItem('studentCards');
+            if(x){allCards=JSON.parse(x)}
+        }catch(e){allCards=[]}
+        updateStats();
+    }
+    loadData();
+
+    function saveData(){
+        try{localStorage.setItem('studentCards',JSON.stringify(allCards));updateStats()}catch(e){}
+    }
+
+    function showMsg(msg,type){
+        if(type===undefined) type='good';
+        var t=document.getElementById('toast');
+        t.textContent=msg;
+        t.className='toast '+type;
+        setTimeout(function(){t.classList.add('show')},100);
+        setTimeout(function(){t.classList.remove('show')},3500);
+    }
+
+    function updateStats(){
+        document.getElementById('totalCount').textContent=allCards.length;
+        var today=new Date().toDateString();
+        var c=0;
+        allCards.forEach(function(card){if(card.regDate===today)c++});
+        document.getElementById('todayCount').textContent=c||'০';
+        document.getElementById('activeCount').textContent=allCards.length;
+    }
+
+    // ===== Navigation =====
+    document.querySelectorAll('.nav-btn').forEach(function(b){
+        b.onclick=function(){
+            document.querySelectorAll('.nav-btn').forEach(function(x){x.classList.remove('active')});
+            this.classList.add('active');
+            document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('show')});
+            document.getElementById(this.dataset.panel).classList.add('show');
+        }
+    });
+
+    // ===== Class toggle =====
+    var clsSelect=document.getElementById('fClass');
+    var divGroup=document.getElementById('divGroup');
+    var divSelect=document.getElementById('fDivision');
+
+    function toggleDiv(){
+        var v=clsSelect.value;
+        if(v==='৯ম'||v==='১০ম'||v==='১১শ'||v==='১২শ'){
+            divGroup.classList.remove('hide-div');
+            divGroup.classList.add('show-div');
+            divSelect.disabled=false;
+        }else{
+            divGroup.classList.remove('show-div');
+            divGroup.classList.add('hide-div');
+            divSelect.disabled=true;
+            divSelect.value='';
+        }
+    }
+    clsSelect.onchange=toggleDiv;
+    toggleDiv();
+
+    // ===== Validation =====
+    function validateField(inp,len){
+        var v=inp.value.trim();
+        if(v.length===len && /^\d+$/.test(v)){
+            inp.classList.remove('red-bg');
+            inp.classList.add('green-bg');
+            return true;
+        }else{
+            inp.classList.remove('green-bg');
+            if(v.length>0){inp.classList.add('red-bg')}
+            else{inp.classList.remove('red-bg')}
+            return false;
+        }
+    }
+
+    document.getElementById('fBirth').oninput=function(){validateField(this,17)};
+    document.getElementById('fMobile').oninput=function(){validateField(this,11)};
+    document.getElementById('fPass').oninput=function(){
+        var v=this.value.trim();
+        if(v.length===8){
+            this.classList.remove('red-bg');
+            this.classList.add('green-bg');
+        }else{
+            this.classList.remove('green-bg');
+            if(v.length>0){this.classList.add('red-bg')}
+            else{this.classList.remove('red-bg')}
+        }
+    };
+
+    // ===== Photo preview =====
+    var photoInp=document.getElementById('fPhoto');
+    var preview=document.getElementById('previewImg');
+
+    photoInp.onchange=function(){
+        var file=this.files[0];
+        if(!file){preview.style.display='none';return}
+        if(file.size>1024*1024*1024){
+            showMsg('ছবি ১GB এর বেশি!','bad');
+            this.value='';
+            preview.style.display='none';
+            return;
+        }
+        var img=new Image();
+        img.onload=function(){
+            if(img.width!==300||img.height!==300){
+                showMsg('ছবি ৩০০×৩০০ হতে হবে!','bad');
+                photoInp.value='';
+                preview.style.display='none';
+                return;
+            }
+            var r=new FileReader();
+            r.onload=function(e){preview.src=e.target.result;preview.style.display='block'};
+            r.readAsDataURL(file);
+        };
+        img.onerror=function(){showMsg('ছবি লোড হয়নি','bad')};
+        img.src=URL.createObjectURL(file);
+    };
+
+    // ===== Registration =====
+    document.getElementById('regForm').onsubmit=function(e){
+        e.preventDefault();
+        if(busy){showMsg('অপেক্ষা করুন...','info');return}
+
+        var name=document.getElementById('fName').value.trim();
+        var father=document.getElementById('fFather').value.trim();
+        var mother=document.getElementById('fMother').value.trim();
+        var school=document.getElementById('fSchool').value.trim()||'—';
+        var cls=clsSelect.value;
+        var div=divSelect.value;
+        var roll=document.getElementById('fRoll').value.trim()||'—';
+        var birth=document.getElementById('fBirth').value.trim();
+        var mobile=document.getElementById('fMobile').value.trim();
+        var pass=document.getElementById('fPass').value.trim();
+        var photoFile=photoInp.files[0];
+
+        if(!photoFile){showMsg('ছবি দিন!','bad');return}
+
+        var img=new Image();
+        img.onload=function(){
+            if(img.width!==300||img.height!==300){
+                showMsg('ছবি ৩০০×৩০০ হতে হবে','bad');
+                return;
+            }
+            var r=new FileReader();
+            r.onload=function(ev){
+                var exists=false;
+                for(var i=0;i<allCards.length;i++){
+                    if(allCards[i].birth===birth && allCards[i].pass===pass){
+                        exists=true;
+                        break;
+                    }
+                }
+                if(exists){
+                    showMsg('এই ডেটা দিয়ে আগেই কার্ড আছে!','bad');
+                    busy=false;
+                    return;
+                }
+
+                var card={
+                    name:name,
+                    father:father,
+                    mother:mother,
+                    school:school,
+                    class:cls,
+                    division:div||'—',
+                    roll:roll,
+                    birth:birth,
+                    mobile:mobile,
+                    pass:pass,
+                    photo:ev.target.result,
+                    regDate:new Date().toDateString()
+                };
+                allCards.push(card);
+                saveData();
+
+                document.getElementById('cName').textContent=name;
+                document.getElementById('cFather').textContent=father;
+                document.getElementById('cMother').textContent=mother;
+                document.getElementById('cSchool').textContent=school;
+                document.getElementById('cClass').textContent=cls;
+                document.getElementById('cDivision').textContent=div||'—';
+                document.getElementById('cRoll').textContent=roll;
+                document.getElementById('cBirth').textContent=birth;
+                document.getElementById('cPhoto').src=ev.target.result;
+                document.getElementById('cardShow').style.display='block';
+
+                document.getElementById('regForm').reset();
+                preview.style.display='none';
+                toggleDiv();
+                var fields=['fBirth','fMobile','fPass'];
+                for(var j=0;j<fields.length;j++){
+                    var el=document.getElementById(fields[j]);
+                    if(el){el.classList.remove('green-bg','red-bg')}
+                }
+                showMsg('✅ নিবন্ধন সফল!','good');
+                busy=false;
+            };
+            r.readAsDataURL(photoFile);
+        };
+        img.onerror=function(){showMsg('ছবি ঠিক নয়','bad');busy=false};
+        img.src=URL.createObjectURL(photoFile);
+
+        busy=true;
+        setTimeout(function(){busy=false},5000);
+    };
+
+    // ===== Search =====
+    document.getElementById('searchForm').onsubmit=function(e){
+        e.preventDefault();
+        var birth=document.getElementById('sBirth').value.trim();
+        var pass=document.getElementById('sPass').value.trim();
+        if(birth.length!==17||!/^\d+$/.test(birth)){
+            showMsg('জন্ম-নিবন্ধন ১৭ অঙ্ক দিন','bad');
+            return;
+        }
+        if(pass.length!==8){
+            showMsg('পাসওয়ার্ড ৮ অক্ষর দিন','bad');
+            return;
+        }
+
+        var found=null;
+        for(var i=0;i<allCards.length;i++){
+            if(allCards[i].birth===birth && allCards[i].pass===pass){
+                found=allCards[i];
+                break;
+            }
+        }
+        if(found){
+            document.getElementById('notFound').style.display='none';
+            document.getElementById('searchResult').style.display='block';
+            document.getElementById('sName').textContent=found.name;
+            document.getElementById('sFather').textContent=found.father;
+            document.getElementById('sMother').textContent=found.mother;
+            document.getElementById('sSchool').textContent=found.school;
+            document.getElementById('sClass').textContent=found.class;
+            document.getElementById('sDivision').textContent=found.division;
+            document.getElementById('sRoll').textContent=found.roll;
+            document.getElementById('sBirthVal').textContent=found.birth;
+            document.getElementById('sPhoto').src=found.photo;
+            showMsg('✅ কার্ড পেয়েছি!','good');
+        }else{
+            document.getElementById('searchResult').style.display='none';
+            document.getElementById('notFound').style.display='block';
+            showMsg('❌ কার্ড নেই','bad');
+        }
+    };
+
+    // ===== PDF =====
+    function makePdf(data){
+        document.getElementById('pPhoto').src=data.photo||'';
+        document.getElementById('pName').textContent=data.name||'—';
+        document.getElementById('pFather').textContent=data.father||'—';
+        document.getElementById('pMother').textContent=data.mother||'—';
+        document.getElementById('pSchool').textContent=data.school||'—';
+        document.getElementById('pClass').textContent=data.class||'—';
+        document.getElementById('pDivision').textContent=data.division||'—';
+        document.getElementById('pRoll').textContent=data.roll||'—';
+        document.getElementById('pBirth').textContent=data.birth||'—';
+
+        var area=document.getElementById('printArea');
+        area.style.display='block';
+        setTimeout(function(){
+            window.print();
+            setTimeout(function(){area.style.display='none'},1000);
+        },500);
+    }
+
+    document.getElementById('downPdf').onclick=function(){
+        if(allCards.length===0){
+            showMsg('কোনো কার্ড নেই!','bad');
+            return;
+        }
+        makePdf(allCards[allCards.length-1]);
+    };
+
+    document.getElementById('downFound').onclick=function(){
+        var res=document.getElementById('searchResult');
+        if(res.style.display==='none'){
+            showMsg('প্রথমে খুঁজুন','bad');
+            return;
+        }
+        var data={
+            name:document.getElementById('sName').textContent,
+            father:document.getElementById('sFather').textContent,
+            mother:document.getElementById('sMother').textContent,
+            school:document.getElementById('sSchool').textContent,
+            class:document.getElementById('sClass').textContent,
+            division:document.getElementById('sDivision').textContent,
+            roll:document.getElementById('sRoll').textContent,
+            birth:document.getElementById('sBirthVal').textContent,
+            photo:document.getElementById('sPhoto').src
+        };
+        makePdf(data);
+    };
+
+    // ===== Search validation =====
+    document.getElementById('sBirth').oninput=function(){validateField(this,17)};
+    document.getElementById('sPass').oninput=function(){
+        var v=this.value.trim();
+        if(v.length===8){
+            this.classList.remove('red-bg');
+            this.classList.add('green-bg');
+        }else{
+            this.classList.remove('green-bg');
+            if(v.length>0){this.classList.add('red-bg')}
+            else{this.classList.remove('red-bg')}
+        }
+    };
+
+    console.log('✅ অ্যাপ রেডি!');
+    console.log('📚 মোট:',allCards.length);
+});
+</script>
+</body>
+</html>
